@@ -174,6 +174,42 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
                 </div>
 
                 <TrendChart data={mockTrendData} />
+
+                {/* Team Insights for Supervisors */}
+                {userRole === 'supervisor' && (
+                  <Card className="bg-white border-gray-200">
+                    <CardHeader>
+                      <CardTitle className="text-gray-900 flex items-center space-x-2">
+                        <Users className="h-5 w-5" />
+                        <span>Team Insights</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div className="text-center p-4 bg-green-50 rounded-lg border border-green-200">
+                          <div className="text-2xl font-bold text-green-700">2</div>
+                          <div className="text-sm text-green-600">Optimal Readiness</div>
+                        </div>
+                        <div className="text-center p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                          <div className="text-2xl font-bold text-yellow-700">1</div>
+                          <div className="text-sm text-yellow-600">Needs Attention</div>
+                        </div>
+                        <div className="text-center p-4 bg-red-50 rounded-lg border border-red-200">
+                          <div className="text-2xl font-bold text-red-700">0</div>
+                          <div className="text-sm text-red-600">Critical Alerts</div>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <Button 
+                          onClick={() => setActiveTab('team')}
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          View Full Team Overview
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
 
               {/* Right Column - Alerts */}

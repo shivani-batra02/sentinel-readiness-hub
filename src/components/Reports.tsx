@@ -44,9 +44,9 @@ const Reports = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
-          <CardTitle className="text-slate-100 flex items-center space-x-2">
+          <CardTitle className="text-gray-900 flex items-center space-x-2">
             <FileText className="h-5 w-5" />
             <span>Reports & Historical Analysis</span>
           </CardTitle>
@@ -58,13 +58,13 @@ const Reports = () => {
         {quickStats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.label} className="bg-slate-800 border-slate-700">
+            <Card key={stat.label} className="bg-white border-gray-200">
               <CardContent className="pt-6">
                 <div className="flex items-center space-x-3">
-                  <Icon className="h-8 w-8 text-blue-400" />
+                  <Icon className="h-8 w-8 text-blue-600" />
                   <div>
-                    <p className="text-2xl font-bold text-slate-100">{stat.value}</p>
-                    <p className="text-sm text-slate-400">{stat.label}</p>
+                    <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                    <p className="text-sm text-gray-600">{stat.label}</p>
                   </div>
                 </div>
               </CardContent>
@@ -74,9 +74,9 @@ const Reports = () => {
       </div>
 
       {/* Generate New Report */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
-          <CardTitle className="text-slate-100">Generate New Report</CardTitle>
+          <CardTitle className="text-gray-900">Generate New Report</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -94,25 +94,25 @@ const Reports = () => {
       </Card>
 
       {/* Available Reports */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
-          <CardTitle className="text-slate-100">Available Reports</CardTitle>
+          <CardTitle className="text-gray-900">Available Reports</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {reports.map((report) => (
               <div 
                 key={report.id}
-                className="flex items-center justify-between p-4 rounded-lg bg-slate-700/50 border border-slate-600"
+                className="flex items-center justify-between p-4 rounded-lg bg-gray-50 border border-gray-200"
               >
                 <div className="flex items-center space-x-4">
-                  <FileText className="h-6 w-6 text-blue-400" />
+                  <FileText className="h-6 w-6 text-blue-600" />
                   <div>
-                    <h4 className="font-medium text-slate-200">{report.title}</h4>
-                    <p className="text-sm text-slate-400">{report.description}</p>
+                    <h4 className="font-medium text-gray-900">{report.title}</h4>
+                    <p className="text-sm text-gray-600">{report.description}</p>
                     <div className="flex items-center space-x-4 mt-1">
-                      <span className="text-xs text-slate-500">Generated: {report.date}</span>
-                      <span className="text-xs text-slate-500">Size: {report.size}</span>
+                      <span className="text-xs text-gray-500">Generated: {report.date}</span>
+                      <span className="text-xs text-gray-500">Size: {report.size}</span>
                     </div>
                   </div>
                 </div>
@@ -121,17 +121,20 @@ const Reports = () => {
                   <Badge 
                     className={`${
                       report.status === 'Ready' 
-                        ? 'bg-green-500/10 text-green-400' 
-                        : 'bg-yellow-500/10 text-yellow-400'
+                        ? 'bg-green-100 text-green-800 border-green-200' 
+                        : 'bg-yellow-100 text-yellow-800 border-yellow-200'
                     }`}
                   >
                     {report.status}
                   </Badge>
-                  <Badge className="bg-blue-500/10 text-blue-400">
+                  <Badge className="bg-blue-100 text-blue-800 border-blue-200">
                     {report.type}
                   </Badge>
                   {report.status === 'Ready' && (
-                    <Button size="sm" variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700">
+                    <Button 
+                      size="sm" 
+                      className="bg-blue-600 hover:bg-blue-700 text-white border-0"
+                    >
                       <Download className="h-4 w-4 mr-2" />
                       Download
                     </Button>
@@ -144,21 +147,21 @@ const Reports = () => {
       </Card>
 
       {/* Export Options */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white border-gray-200">
         <CardHeader>
-          <CardTitle className="text-slate-100">Data Export</CardTitle>
+          <CardTitle className="text-gray-900">Data Export</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <p className="text-slate-300">Export your data in various formats for external analysis or record keeping.</p>
+            <p className="text-gray-700">Export your data in various formats for external analysis or record keeping.</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white border-0">
                 Export CSV
               </Button>
-              <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white border-0">
                 Export JSON
               </Button>
-              <Button variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white border-0">
                 Export PDF
               </Button>
             </div>
