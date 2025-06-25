@@ -40,8 +40,63 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
     { id: 'settings', label: 'Settings', icon: SettingsIcon },
   ];
 
-  const handleMemberSelect = (memberId: string) => {
-    setSelectedMember(memberId);
+  // Mock data
+  const mockTrendData = [
+    { time: 'Mon', hrv: 42, sleep: 72, activity: 58, stress: 45 },
+    { time: 'Tue', hrv: 48, sleep: 80, activity: 62, stress: 38 },
+    { time: 'Wed', hrv: 35, sleep: 62, activity: 68, stress: 68 },
+    { time: 'Thu', hrv: 52, sleep: 83, activity: 78, stress: 32 },
+    { time: 'Fri', hrv: 45, sleep: 75, activity: 72, stress: 48 },
+    { time: 'Sat', hrv: 59, sleep: 88, activity: 82, stress: 28 },
+    { time: 'Sun', hrv: 55, sleep: 85, activity: 68, stress: 33 }
+  ];
+
+  const mockAlerts = [
+    {
+      id: '1',
+      timestamp: 'Today 14:32',
+      severity: 'high' as const,
+      message: 'Sudden HRV drop detected',
+      suggestion: 'Recommend break and stress assessment'
+    },
+    {
+      id: '2',
+      timestamp: 'Yesterday 09:15',
+      severity: 'medium' as const,
+      message: 'Sleep quality below baseline',
+      suggestion: 'Check sleep environment and routine'
+    }
+  ];
+
+  const mockTeamMembers = [
+    {
+      id: '1',
+      name: 'John Smith',
+      rank: 'Sgt',
+      readiness: 85,
+      alerts: 0,
+      lastUpdate: '2 min ago'
+    },
+    {
+      id: '2',
+      name: 'Sarah Johnson',
+      rank: 'Cpl',
+      readiness: 72,
+      alerts: 1,
+      lastUpdate: '5 min ago'
+    },
+    {
+      id: '3',
+      name: 'Mike Davis',
+      rank: 'Pvt',
+      readiness: 45,
+      alerts: 3,
+      lastUpdate: '1 min ago'
+    }
+  ];
+
+  const handleMemberSelect = (member: any) => {
+    setSelectedMember(member.id);
     setActiveTab('member-detail');
   };
 
@@ -77,7 +132,7 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Left Column - Main Metrics */}
               <div className="lg:col-span-2 space-y-6">
-                <ReadinessCard />
+                <ReadinessCard score={82} trend={5} />
                 
                 <div className="grid grid-cols-2 gap-4">
                   <MetricCard 
@@ -110,12 +165,12 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
                   />
                 </div>
 
-                <TrendChart />
+                <TrendChart data={mockTrendData} />
               </div>
 
               {/* Right Column - Alerts */}
               <div className="space-y-6">
-                <AlertFeed />
+                <AlertFeed alerts={mockAlerts} />
               </div>
             </div>
           </div>
@@ -123,11 +178,11 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
       case 'metrics':
         return <DetailedMetrics />;
       case 'team':
-        return <TeamOverview onMemberSelect={handleMemberSelect} />;
+        return <TeamOverview teamMembers={mockTeamMembers} onMemberClick={handleMemberSelect} />;
       case 'member-detail':
         return selectedMember ? (
           <TeamMemberDetail 
-            memberId={selectedMember} 
+            member={mockTeamMembers.find(m => m.id === selectedMember)!}
             onBack={handleBackToTeam}
           />
         ) : null;
