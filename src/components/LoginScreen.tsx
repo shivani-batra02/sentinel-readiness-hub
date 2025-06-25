@@ -13,29 +13,29 @@ const LoginScreen = ({ onLogin }: LoginScreenProps) => {
   const [selectedRole, setSelectedRole] = useState<'personnel' | 'supervisor' | null>(null);
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-slate-800 border-slate-700">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md bg-white border-gray-200 shadow-lg">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <Shield className="h-12 w-12 text-blue-400" />
+            <Shield className="h-12 w-12 text-blue-600" />
           </div>
-          <CardTitle className="text-2xl text-slate-100">
-            Psychometric Readiness
+          <CardTitle className="text-2xl text-gray-900">
+            Sentinel AI - Psychometric Readiness
           </CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardDescription className="text-gray-600">
             Monitor personnel readiness and performance metrics
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-3">
-            <h3 className="text-sm font-medium text-slate-300">Select Your Role</h3>
+            <h3 className="text-sm font-medium text-gray-700">Select Your Role</h3>
             
             <Button
               variant={selectedRole === 'personnel' ? 'default' : 'outline'}
               className={`w-full justify-start h-auto p-4 ${
                 selectedRole === 'personnel' 
-                  ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                  : 'bg-slate-700 border-slate-600 text-slate-300 hover:bg-slate-600'
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white border-blue-600' 
+                  : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
               }`}
               onClick={() => setSelectedRole('personnel')}
             >
@@ -50,8 +50,8 @@ const LoginScreen = ({ onLogin }: LoginScreenProps) => {
               variant={selectedRole === 'supervisor' ? 'default' : 'outline'}
               className={`w-full justify-start h-auto p-4 ${
                 selectedRole === 'supervisor' 
-                  ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                  : 'bg-slate-700 border-slate-600 text-slate-300 hover:bg-slate-600'
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white border-blue-600' 
+                  : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
               }`}
               onClick={() => setSelectedRole('supervisor')}
             >
@@ -64,18 +64,18 @@ const LoginScreen = ({ onLogin }: LoginScreenProps) => {
           </div>
 
           <Button 
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
             disabled={!selectedRole}
             onClick={() => selectedRole && onLogin(selectedRole)}
           >
             Access Dashboard
           </Button>
 
-          <div className="pt-4 border-t border-slate-700">
-            <Badge variant="outline" className="w-full justify-center text-xs py-2 border-green-500/20 text-green-400">
+          <div className="pt-4 border-t border-gray-200">
+            <Badge variant="outline" className="w-full justify-center text-xs py-2 border-green-500 text-green-700 bg-green-50">
               🔒 Privacy Protected: Only physiological signals monitored
             </Badge>
-            <p className="text-xs text-slate-500 mt-2 text-center">
+            <p className="text-xs text-gray-500 mt-2 text-center">
               No private communications or social tracking. Your data remains secure.
             </p>
           </div>
