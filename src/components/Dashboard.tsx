@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -70,11 +71,12 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
     { id: '4', name: 'Marcus Cole', rank: 'Lt.', readiness: 92, alerts: 0, lastUpdate: '3 min ago' }
   ];
 
+  // Filter menu items based on user role
   const menuItems = [
     { id: 'dashboard', title: 'Dashboard', icon: LayoutDashboard },
     { id: 'metrics', title: 'Detailed Metrics', icon: TrendingUp },
     ...(userRole === 'supervisor' ? [{ id: 'team', title: 'Team Overview', icon: Users }] : []),
-    { id: 'reports', title: 'Reports', icon: FileText },
+    ...(userRole === 'supervisor' ? [{ id: 'reports', title: 'Reports', icon: FileText }] : []),
     { id: 'settings', title: 'Settings', icon: SettingsIcon }
   ];
 
@@ -196,10 +198,10 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
         ) : null;
 
       case 'reports':
-        return <Reports />;
+        return userRole === 'supervisor' ? <Reports /> : null;
 
       case 'settings':
-        return <Settings />;
+        return <Settings userRole={userRole} />;
 
       default:
         return (
@@ -225,7 +227,7 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
             <SidebarGroup>
               <SidebarGroupLabel className="text-slate-100 text-lg font-semibold px-4 py-3 bg-slate-700/50 rounded-lg mx-2 mb-2">
                 <Shield className="h-5 w-5 mr-2 inline text-blue-400" />
-                Readiness Monitor
+                Sentinel AI
               </SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
@@ -236,7 +238,7 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
                         className={`${
                           activeView === item.id 
                             ? 'bg-blue-600 text-white shadow-lg border border-blue-500/50' 
-                            : 'text-slate-200 hover:bg-slate-700 hover:text-white border border-transparent'
+                            : 'text-slate-300 hover:bg-slate-700 hover:text-white border border-transparent'
                         } mx-2 my-1 rounded-lg transition-all duration-200 font-medium`}
                       >
                         <button 

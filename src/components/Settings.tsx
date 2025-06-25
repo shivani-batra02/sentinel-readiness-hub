@@ -5,7 +5,11 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Settings as SettingsIcon, Shield, Bell, Download, Trash2, Eye } from 'lucide-react';
 
-const Settings = () => {
+interface SettingsProps {
+  userRole: 'personnel' | 'supervisor';
+}
+
+const Settings = ({ userRole }: SettingsProps) => {
   return (
     <div className="space-y-6">
       <Card className="bg-slate-800 border-slate-700">
@@ -134,26 +138,32 @@ const Settings = () => {
                 <h4 className="font-medium text-slate-200">View Data Usage</h4>
               </div>
               <p className="text-slate-400 text-sm mb-3">
-                See what data is collected and how it's used
+                {userRole === 'personnel' 
+                  ? 'Request to see what data is collected and how it\'s used'
+                  : 'See what data is collected and how it\'s used'
+                }
               </p>
               <Button size="sm" variant="outline" className="border-slate-600 text-slate-300 hover:bg-slate-700">
-                View Details
+                {userRole === 'personnel' ? 'Request View Details' : 'View Details'}
               </Button>
             </div>
           </div>
 
-          <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20">
-            <div className="flex items-center space-x-2 mb-2">
-              <Trash2 className="h-5 w-5 text-red-400" />
-              <h4 className="font-medium text-red-400">Delete All Data</h4>
+          {/* Only show delete option for supervisors */}
+          {userRole === 'supervisor' && (
+            <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20">
+              <div className="flex items-center space-x-2 mb-2">
+                <Trash2 className="h-5 w-5 text-red-400" />
+                <h4 className="font-medium text-red-400">Delete All Data</h4>
+              </div>
+              <p className="text-slate-300 text-sm mb-3">
+                Permanently delete all data from the system. This action cannot be undone.
+              </p>
+              <Button size="sm" variant="destructive">
+                Delete All Data
+              </Button>
             </div>
-            <p className="text-slate-300 text-sm mb-3">
-              Permanently delete all your data from the system. This action cannot be undone.
-            </p>
-            <Button size="sm" variant="destructive">
-              Delete My Data
-            </Button>
-          </div>
+          )}
         </CardContent>
       </Card>
 
