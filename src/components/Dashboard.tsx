@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,12 +8,16 @@ import MetricCard from './MetricCard';
 import AlertFeed from './AlertFeed';
 import TrendChart from './TrendChart';
 import TeamOverview from './TeamOverview';
+import DetailedMetrics from './DetailedMetrics';
+import Reports from './Reports';
+import Settings from './Settings';
+import TeamMemberDetail from './TeamMemberDetail';
 import { 
   LayoutDashboard, 
   TrendingUp, 
   Users, 
   FileText, 
-  Settings, 
+  Settings as SettingsIcon, 
   LogOut,
   Brain,
   Heart,
@@ -30,6 +33,7 @@ interface DashboardProps {
 
 const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
   const [activeView, setActiveView] = useState('dashboard');
+  const [selectedTeamMember, setSelectedTeamMember] = useState<any>(null);
 
   // Mock data - in real app would come from API
   const mockAlerts = [
@@ -71,10 +75,24 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
     { id: 'metrics', title: 'Detailed Metrics', icon: TrendingUp },
     ...(userRole === 'supervisor' ? [{ id: 'team', title: 'Team Overview', icon: Users }] : []),
     { id: 'reports', title: 'Reports', icon: FileText },
-    { id: 'settings', title: 'Settings', icon: Settings }
+    { id: 'settings', title: 'Settings', icon: SettingsIcon }
   ];
 
+  const handleTeamMemberClick = (member: any) => {
+    setSelectedTeamMember(member);
+    setActiveView('team-member-detail');
+  };
+
+  const handleBackToTeam = () => {
+    setSelectedTeamMember(null);
+    setActiveView('team');
+  };
+
   const renderContent = () => {
+    if (activeView === 'team-member-detail' && selectedTeamMember) {
+      return <TeamMemberDetail member={selectedTeamMember} onBack={handleBackToTeam} />;
+    }
+
     switch (activeView) {
       case 'dashboard':
         return (
@@ -157,6 +175,9 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
           </div>
         );
 
+      case 'metrics':
+        return <DetailedMetrics />;
+
       case 'team':
         return userRole === 'supervisor' ? (
           <div className="space-y-6">
@@ -165,11 +186,20 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
                 <CardTitle className="text-slate-100">Team Management</CardTitle>
               </CardHeader>
               <CardContent>
-                <TeamOverview teamMembers={mockTeamMembers} />
+                <TeamOverview 
+                  teamMembers={mockTeamMembers} 
+                  onMemberClick={handleTeamMemberClick}
+                />
               </CardContent>
             </Card>
           </div>
         ) : null;
+
+      case 'reports':
+        return <Reports />;
+
+      case 'settings':
+        return <Settings />;
 
       default:
         return (
@@ -178,7 +208,7 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
               <div className="text-center py-12">
                 <Shield className="h-12 w-12 mx-auto mb-4 text-slate-400" />
                 <p className="text-slate-400">
-                  {activeView} - Coming soon
+                  {activeView} - Content loaded
                 </p>
               </div>
             </CardContent>
@@ -193,8 +223,8 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
         <Sidebar className="bg-slate-800 border-slate-700">
           <SidebarContent>
             <SidebarGroup>
-              <SidebarGroupLabel className="text-slate-300 text-lg font-semibold px-4 py-2">
-                <Shield className="h-5 w-5 mr-2 inline" />
+              <SidebarGroupLabel className="text-slate-100 text-lg font-semibold px-4 py-3 bg-slate-700/50 rounded-lg mx-2 mb-2">
+                <Shield className="h-5 w-5 mr-2 inline text-blue-400" />
                 Readiness Monitor
               </SidebarGroupLabel>
               <SidebarGroupContent>
@@ -205,16 +235,16 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
                         asChild
                         className={`${
                           activeView === item.id 
-                            ? 'bg-blue-600 text-white' 
-                            : 'text-slate-300 hover:bg-slate-700'
-                        }`}
+                            ? 'bg-blue-600 text-white shadow-lg border border-blue-500/50' 
+                            : 'text-slate-200 hover:bg-slate-700 hover:text-white border border-transparent'
+                        } mx-2 my-1 rounded-lg transition-all duration-200 font-medium`}
                       >
                         <button 
                           onClick={() => setActiveView(item.id)}
-                          className="w-full flex items-center space-x-2 px-4 py-2"
+                          className="w-full flex items-center space-x-3 px-4 py-3"
                         >
-                          <item.icon className="h-4 w-4" />
-                          <span>{item.title}</span>
+                          <item.icon className="h-5 w-5" />
+                          <span className="text-sm">{item.title}</span>
                         </button>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -226,7 +256,7 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
             <div className="mt-auto p-4">
               <Button 
                 variant="outline" 
-                className="w-full border-slate-600 text-slate-300 hover:bg-slate-700"
+                className="w-full border-slate-600 text-slate-200 hover:bg-slate-700 hover:text-white hover:border-slate-500 transition-all duration-200"
                 onClick={onLogout}
               >
                 <LogOut className="h-4 w-4 mr-2" />
@@ -238,7 +268,7 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
 
         <main className="flex-1 flex flex-col">
           <div className="bg-slate-800 border-b border-slate-700 px-6 py-4">
-            <SidebarTrigger className="text-slate-300 hover:text-white" />
+            <SidebarTrigger className="text-slate-300 hover:text-white hover:bg-slate-700 rounded-md p-2 transition-colors" />
           </div>
           <div className="flex-1 p-6">
             {renderContent()}

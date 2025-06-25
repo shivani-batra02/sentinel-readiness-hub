@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Users, AlertTriangle } from 'lucide-react';
+import { Users, AlertTriangle, ChevronRight } from 'lucide-react';
 
 interface TeamMember {
   id: string;
@@ -14,9 +14,10 @@ interface TeamMember {
 
 interface TeamOverviewProps {
   teamMembers: TeamMember[];
+  onMemberClick?: (member: TeamMember) => void;
 }
 
-const TeamOverview = ({ teamMembers }: TeamOverviewProps) => {
+const TeamOverview = ({ teamMembers, onMemberClick }: TeamOverviewProps) => {
   const getReadinessStatus = (score: number) => {
     if (score >= 80) return { status: 'Optimal', color: 'text-green-400', bg: 'bg-green-500/10' };
     if (score >= 60) return { status: 'Caution', color: 'text-yellow-400', bg: 'bg-yellow-500/10' };
@@ -39,7 +40,10 @@ const TeamOverview = ({ teamMembers }: TeamOverviewProps) => {
             return (
               <div 
                 key={member.id}
-                className="flex items-center justify-between p-3 rounded-lg bg-slate-700/50 border border-slate-600"
+                className={`flex items-center justify-between p-3 rounded-lg bg-slate-700/50 border border-slate-600 ${
+                  onMemberClick ? 'cursor-pointer hover:bg-slate-700/70 hover:border-slate-500 transition-all duration-200' : ''
+                }`}
+                onClick={() => onMemberClick?.(member)}
               >
                 <div className="flex items-center space-x-3">
                   <div className="flex-shrink-0">
@@ -75,6 +79,10 @@ const TeamOverview = ({ teamMembers }: TeamOverviewProps) => {
                       {statusInfo.status}
                     </Badge>
                   </div>
+                  
+                  {onMemberClick && (
+                    <ChevronRight className="h-4 w-4 text-slate-400" />
+                  )}
                 </div>
               </div>
             );
