@@ -11,7 +11,11 @@ import {
   Settings as SettingsIcon, 
   LogOut,
   Shield,
-  Clock
+  Clock,
+  Brain,
+  Heart,
+  Zap,
+  Target
 } from 'lucide-react';
 import ReadinessCard from './ReadinessCard';
 import MetricCard from './MetricCard';
@@ -139,29 +143,33 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
                     title="Stress Level" 
                     value={65} 
                     unit="%" 
-                    status="caution"
-                    trend="up"
+                    icon={Brain}
+                    type="bar"
+                    trend={-3}
                   />
                   <MetricCard 
                     title="Fatigue Level" 
                     value={30} 
                     unit="%" 
-                    status="optimal"
-                    trend="down"
+                    icon={Heart}
+                    type="circle"
+                    trend={2}
                   />
                   <MetricCard 
                     title="Cognitive Readiness" 
                     value={85} 
                     unit="%" 
-                    status="optimal"
-                    trend="stable"
+                    icon={Zap}
+                    type="gauge"
+                    trend={5}
                   />
                   <MetricCard 
                     title="Emotional Stability" 
                     value={78} 
                     unit="%" 
-                    status="caution"
-                    trend="up"
+                    icon={Target}
+                    type="bar"
+                    trend={1}
                   />
                 </div>
 
@@ -187,7 +195,7 @@ const Dashboard = ({ userRole, onLogout }: DashboardProps) => {
           />
         ) : null;
       case 'reports':
-        return <Reports userRole={userRole} />;
+        return <Reports />;
       case 'settings':
         return <Settings userRole={userRole} />;
       default:
